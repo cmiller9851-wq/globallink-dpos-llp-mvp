@@ -1,26 +1,25 @@
+I understand. You need the complete, finalized content for the README.md file, which should now include the instructions for deploying to the Sepolia testnet, reflecting the new changes to hardhat.config.js and the need for a .env file.
+Here is the full replacement content for your README.md.
+📖 Complete README.md for GlobalLink-DPoS-MVP (Deployment Ready)
 # 🌐 GlobalLink: Decentralized Proof-of-Stake (DPoS) MVP
 
 **Repository Name:** `globallink-dpos-llp-mvp`
 
 **Description:** Decentralized Proof-of-Stake (DPoS) layer and Local Liquidity Provider (LLP) bridge for zero-fee cross-border stablecoin (GLX-USD) payments.
 
-**Status:** MVP Phase Concluded, Ready for Security Auditing and Scaling.
+**Status:** Security Hardened, Gas Optimized, and Ready for Testnet Deployment.
 
 ---
 
 ## 🏗️ 1. Architecture Overview
 
-This project implements the core financial and consensus logic for GlobalLink, splitting the system into three integrated layers. 
+This project implements the core financial and consensus logic for GlobalLink, secured by a **Reentrancy Guard** on all transactional functions (`stake`, `unstake`, `claimRewards`). 
 
-| Layer | Components | Governance/Control |
+| Layer | Contracts | Security/Governance |
 | :--- | :--- | :--- |
-| **On-Chain Core** | `DPoSValidator.sol`, `LLP.sol`, `MultiSigWallet.sol` | **DAO-Controlled:** The **MultiSigWallet** acts as the `ADMIN_ROLE` for all core contracts. |
-| **Off-Chain Services**| `llp_monitor.js`, `mock-llp-api.js` | **Real-Time Bridge:** Monitors blockchain events (`FiatPayout`) and triggers the simulated bank/fiat API via HTTP. |
-| **Client SDK/UI** | `wallet.js`, `StakingDashboard.jsx` | **User Interaction:** Ethers.js module for staking, delegation, and claiming rewards. |
-
-### Governance Structure
-
-The system is governed by a **3-owner MultiSig DAO** with a **2-of-3 quorum** required for all administrative actions (e.g., registering new validators, funding reward pools).
+| **On-Chain Core** | `DPoSValidator.sol`, `LLP.sol`, `MultiSigWallet.sol` | **Security:** ReentrancyGuard implemented. **Governance:** 2-of-3 MultiSig DAO. |
+| **Off-Chain Services**| `llp_monitor.js`, `mock-llp-api.js` | Monitors `FiatPayout` events to trigger mock fiat API calls. |
+| **Client SDK/UI** | `wallet.js`, `StakingDashboard.jsx` | Ethers.js module for user staking, delegation, and claiming rewards. |
 
 ---
 
@@ -30,7 +29,8 @@ The system is governed by a **3-owner MultiSig DAO** with a **2-of-3 quorum** re
 
 * **Node.js** (v18+) and **npm**
 * **Hardhat** (Installed locally via `npm install`)
-* **Ethers.js** (Used in all off-chain and client code)
+* **A Funded Wallet** (For Sepolia deployment)
+* **Sepolia RPC URL** (From Alchemy/Infura)
 
 ### Installation Steps
 
@@ -43,51 +43,56 @@ The system is governed by a **3-owner MultiSig DAO** with a **2-of-3 quorum** re
     ```bash
     npm install
     ```
-3.  Install dependencies for the Off-Chain Services (required for Express, Socket.io, and SQLite):
+3.  Install dependencies for the Off-Chain Services:
     ```bash
     npm install --prefix off-chain-service express body-parser socket.io better-sqlite3 axios
     ```
-4.  **Configuration:** Before running, you must update the contract addresses (`0xYour...Address`) in the configuration sections of:
-    * `off-chain-service/llp_monitor.js`
-    * `off-chain-service/mock-llp-api.js`
-    * `client-sdk/wallet.js`
+4.  **Create `.env` file:** Create a file named `.env` in the root directory (make sure it's in `.gitignore`) and add your network credentials:
+    ```
+    SEPOLIA_RPC_URL="[https://eth-sepolia.g.alchemy.com/v2/](https://eth-sepolia.g.alchemy.com/v2/)[YOUR_API_KEY]"
+    PRIVATE_KEY="YOUR_DEPLOYMENT_WALLET_PRIVATE_KEY"
+    ```
+5.  **Configuration:** Update the contract addresses in the off-chain service files after deployment.
 
 ---
 
-## 🧪 3. Running the MVP Stack
+## 🚀 3. Testnet Deployment (Sepolia)
 
-### Step 1: Start the Local Hardhat Node
+Use the unified deployment script (`scripts/deploy.js`) to deploy all core contracts (GLX Token, MultiSig, DPoS, LLP) to the Sepolia testnet.
 
-Open the **first terminal** and start the development blockchain. This provides the RPC endpoint.
 ```bash
+# Deploys using the credentials provided in the .env file
+npx hardhat run scripts/deploy.js --network sepolia
+
+Note: This command will incur gas fees on Sepolia.
+🧪 4. Local MVP Testing
+For local development, use the following steps.
+Step 1: Start the Local Hardhat Node
+Open the first terminal to start the development blockchain.
 npx hardhat node
 
-Step 2: Deploy All Contracts
-Open the second terminal and run the unified deployment script. This deploys the token, MultiSig, DPoS, Controller, and LLP contracts.
+Step 2: Deploy All Contracts (Local)
+Open the second terminal and run the deployment script targeting the local network.
 npx hardhat run scripts/deploy.js --network localhost
 
-Note: Copy the deployed addresses from this output to update the configuration files listed in Section 2.
-Step 3: Start Off-Chain Services
-Open the third and fourth terminals to start the monitoring and API services.
-Terminal 3: Start the Mock LLP API Server
+Step 3: Run Off-Chain Services
+Start the services required for monitoring fiat payments.
+# Terminal 3: Start the Mock LLP API Server
 node off-chain-service/mock-llp-api.js
-# Should report: 🌐 Mock LLP API running on http://localhost:3001
 
-Terminal 4: Start the Event Monitor
+# Terminal 4: Start the Event Monitor
 node off-chain-service/llp_monitor.js
-# Should report: 🎧 Monitoring LLP contract... Waiting for FiatPayout events...
 
 Step 4: Run Tests
-Open the fifth terminal and execute the full test suite to verify the staking and governance logic.
+Execute the full test suite, including security and reentrancy tests.
 npx hardhat test
 
-📚 4. Core Contracts & SDK Reference
+📚 5. Core Contracts & SDK Reference
 | Component | File Path | Key Functions |
 |---|---|---|
-| Consensus | contracts/DPoSValidator.sol | stake(), unstake(), currentProducer(), claimRewards() |
-| Governance | contracts/MultiSigWallet.sol | submitTransaction(), confirmTransaction(), executeTransaction() |
+| Consensus | contracts/DPoSValidator.sol | stake(), unstake(), claimRewards() (All protected by nonReentrant) |
+| Governance | contracts/MultiSigWallet.sol | executeTransaction() (Uses Checks-Effects-Interactions) |
 | Fiat Bridge | contracts/LLP.sol | mintFromFiat(), swapToFiat() (Emits FiatPayout) |
 | Client SDK | client-sdk/wallet.js | stake(), getGlxBalance(), showCurrentProducer() |
-⚖️ 5. License
+⚖️ 6. License
 This project is licensed under the Apache License 2.0. See the LICENSE file for details.
-
