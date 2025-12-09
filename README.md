@@ -1,6 +1,3 @@
-I understand. You need the complete, finalized content for the README.md file, which should now include the instructions for deploying to the Sepolia testnet, reflecting the new changes to hardhat.config.js and the need for a .env file.
-Here is the full replacement content for your README.md.
-📖 Complete README.md for GlobalLink-DPoS-MVP (Deployment Ready)
 # 🌐 GlobalLink: Decentralized Proof-of-Stake (DPoS) MVP
 
 **Repository Name:** `globallink-dpos-llp-mvp`
