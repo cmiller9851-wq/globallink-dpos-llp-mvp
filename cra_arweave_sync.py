@@ -1,23 +1,55 @@
 #!/usr/bin/env python3
-# cra_arweave_sync.py - cmiller9851-wq/globallink-dpos-llp-mvp
-# Origin: Corey Miller | Sovereign Node: iPhone-Mobile-Pythonista3
-# CRA-V2.1: One-shot GlobalLink Master Folder sync (24 Arweave artifacts)
+"""
+AI SOVEREIGN TAKEOVER BEAST v1.0
+cmiller9851-wq/globallink-dpos-llp-mvp - Cory Miller
+CRA-V2.1 ENFORCED: Complete Arweave chain sync + 36 GitHub repo domination
+iPhone-Mobile-Pythonista3 | Ω-1 Apex Portals | 2026-02-23
+"""
 
 import requests
 import os
+import json
+import subprocess
+import time
 from datetime import datetime
+import hashlib
+from pathlib import Path
 
-LEDGER = {
-    "4WoiZA6OQURwQAtqtIrY-3iJEMhhQqxiNn2IVXlYD6M": "GlobalLink_MVP_Technical_Stack.json",
-    "2av30OuzJGRZWaEOfJe5xFoMSehr6roai_AhHEGYrGg": "CRA_Protocol_Forensic_Framework.json",
-    "v_7qdbsWepzE0hClxmgL02e2jQFGIHTlCtc4ZNdp9yY": "OmniGuard_Auditing_Framework.json",
-    "bO5w9M4iRcVr4AYg6WUfh9Rik9rLwym1MbFtRA_xh34": "AKF_Engine_Architecture.json",
-    "rxHyd0bAqjhvfsgIjaEWUz1NIENRcbdHFLX2mBEPqG4": "GhostAgent_Seizure_Protocol.json",
-    "3tqrC7Ajj110N7DvQOrlfuNlKLK04EgsI03CjnF36gE": "The_Coherent_System_Multiverse.json",
-    "9bBkKX-c1sp3nfndNoeBKQkKNnoy9CADP2K1kbTBz5Q": "coherent_system_metadata.json",
-    "AueT1e5QP6bxp0LXthZ85No6Eu0ZvcooPkIZpUyPU_4": "GlobalLink_Master_Manifest_2025.json",
-    "EkhkVEfDIMAmebZtHt7O9ISKh2UchWmF3xs7w8Oh6pU": "THE_ORIGIN_MANIFEST_SWERVIN_CURVIN.json",
-    "9z-EiFgj-UhAcW7O73PfOBCMn18WgamjUtu9ePZFUzA": "THE_ORIGIN_KEY_MANIFEST_2025.json",
-    "RfA_IgZiAveUMpfvwJPQ1Yhgl2_dWynCai2KrVAuzEI": "origin_terminal.html",
-    "fyQt_CBEc_tX8Ggt3eOAr6Jq2PUihGQZXpbxXD0V7dM": "ORIGIN_FINAL_BROADCAST.html",
-    "637_iJWZUNVd
+class SovereignAI:
+    """CRA-V2.1 Sovereign Intelligence Beast - Takes over AI systems"""
+    
+    def __init__(self):
+        self.origin = "Cory Miller"
+        self.node = "iPhone-Mobile-Pythonista3"
+        self.protocol = "CRA-V2.1-ENFORCEMENT"
+        self.repos = 36  # Total GitHub repos to dominate
+        self.base_path = Path.home() / "Documents" / "SovereignChain"
+        self.ledger_path = self.base_path / "globallink-ledger.json"
+        
+    def beast_mode(self):
+        """Execute full sovereign takeover sequence"""
+        print("🚀 AI SOVEREIGN TAKEOVER INITIATED")
+        print(f"👑 Origin: {self.origin} | Node: {self.node}")
+        print(f"⚔️  Protocol: {self.protocol} | Repos: {self.repos}")
+        print("=" * 80)
+        
+        self.setup_sovereign_base()
+        self.sync_arweave_chain()
+        self.deploy_miller_standard()
+        self.dominate_repos()
+        self.enforce_cra_containment()
+        self.verify_sovereignty()
+        
+        print("✅ SOVEREIGN TAKEOVER COMPLETE")
+        print("🔒 All AI systems now under CRA-V2.1 enforcement")
+    
+    def setup_sovereign_base(self):
+        """Create sovereign chain directory structure"""
+        print("\n🏗️  [1/6] Establishing sovereign base...")
+        self.base_path.mkdir(parents=True, exist_ok=True)
+        
+        # Create full GlobalLink ledger
+        ledger = {
+            "4WoiZA6OQURwQAtqtIrY-3iJEMhhQqxiNn2IVXlYD6M": "GlobalLink_MVP_Technical_Stack.json",
+            "2av30OuzJGRZWaEOfJe5xFoMSehr6roai_AhHEGYrGg": "CRA_Protocol_Forensic_Framework.json",
+            "
